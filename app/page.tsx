@@ -42,10 +42,10 @@ const MSAShirtCalculator: React.FC = () => {
   const calcShirts: SubmitHandler<FormInputs> = () => {
     const data = getValues();
     const items: Item[] = [
-      { name: 'T-Shirt', unitPrice: 16, darkUnitPrice: 18, designElements: 1 },
-      { name: 'Crewneck', unitPrice: 12, darkUnitPrice: 14, designElements: 1 },
-      { name: 'Hoodie', unitPrice: 20, darkUnitPrice: 22, designElements: 1 },
-      { name: 'Long Sleeve', unitPrice: 18, darkUnitPrice: 20, designElements: 1 },
+      { name: 'T-Shirt', unitPrice: 5, darkUnitPrice: 6, designElements: 1 },
+      { name: 'Crewneck', unitPrice: 11, darkUnitPrice: 13, designElements: 1 },
+      { name: 'Hoodie', unitPrice: 18, darkUnitPrice: 20, designElements: 1 },
+      { name: 'Long Sleeve', unitPrice: 9, darkUnitPrice: 11, designElements: 1 },
     ];
   
     const quantities = [
