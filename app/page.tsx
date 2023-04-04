@@ -33,11 +33,20 @@ interface FormInputs {
 }
 
 const MSAShirtCalculator: React.FC = () => {
-  const { register, handleSubmit, getValues } = useForm<FormInputs>();
+  const { register, handleSubmit, getValues, formState: { errors } } = useForm<FormInputs>();
   const [output, setOutput] = useState<CalculatedItem[]>([]);
   const [lightShirtSelected, setLightShirtSelected] = useState<boolean>(true);
   const [screenFeeSubtotal, setScreenFeeSubtotal] = useState<number>(0);
 
+  const validateNumber = (value: number) => {
+    const regex = /^\d+$/;
+    return (regex.test(value.toString()) && value >= 0) || "Please enter a number or zero";
+  };
+
+  const validateDesignElements = (value: number) => {
+    return value > 0 || "Please enter a number greater than 0";
+  };
+  
 
   const calcShirts: SubmitHandler<FormInputs> = () => {
     const data = getValues();
@@ -93,18 +102,24 @@ const MSAShirtCalculator: React.FC = () => {
       <hr className="mb-4" />
       <form onSubmit={handleSubmit(calcShirts)} className="space-y-4 flex flex-col items-center">
 <label htmlFor="designElements">Number of Design Elements:</label>
-<input {...register('designElements', { valueAsNumber: true, onChange:calcShirts })} id="screenFee" placeholder="Amount" defaultValue="1" className="border text-center border-gray-300 rounded-md p-2" />
+<input {...register('designElements', { valueAsNumber: true, onChange:calcShirts, validate: validateDesignElements })} id="screenFee" placeholder="Amount" defaultValue="1" className={`border text-center border-gray-300 rounded-md p-2 ${errors.designElements && 'border-red-500'}`} type="number" pattern="\d*" inputMode="numeric" min={1}/>
+{errors.designElements && <span className="text-red-500">{errors.designElements.message}</span>}
+
 <label htmlFor="qty1">T-Shirt:</label>
-<input {...register('qty1', { valueAsNumber: true, onChange: calcShirts })} id="qty1" placeholder="Quantity" className="border text-center border-gray-300 rounded-md p-2"/>
+<input {...register('qty1', { valueAsNumber: true, onChange: calcShirts, validate: validateNumber })} id="qty1" placeholder="Quantity" className={`border text-center border-gray-300 rounded-md p-2 ${errors.qty1 && 'border-red-500'}`} type="number" pattern="\d*" inputMode="numeric" min={0}/>
+{errors.qty1 && <span className="text-red-500">{errors.qty1.message}</span>}
 
 <label className='pl-2' htmlFor="qty2">Crewneck:</label>
-<input {...register('qty2', { valueAsNumber: true, onChange: calcShirts })} id="qty2" placeholder="Quantity" className="border text-center border-gray-300 rounded-md p-2"/>
+<input {...register('qty2', { valueAsNumber: true, onChange: calcShirts, validate: validateNumber })} id="qty2" placeholder="Quantity" className={`border text-center border-gray-300 rounded-md p-2 ${errors.qty2 && 'border-red-500'}`} type="number" pattern="\d*" inputMode="numeric" min={0}/>
+{errors.qty2 && <span className="text-red-500">{errors.qty2.message}</span>}
 
 <label className='pl-2' htmlFor="qty3">Hoodie:</label>
-<input {...register('qty3', { valueAsNumber: true, onChange: calcShirts })} id="qty3" placeholder="Quantity" className="border text-center border-gray-300 rounded-md p-2"/>
+<input {...register('qty3', { valueAsNumber: true, onChange: calcShirts, validate: validateNumber })} id="qty3" placeholder="Quantity" className={`border text-center border-gray-300 rounded-md p-2 ${errors.qty3 && 'border-red-500'}`} type="number" pattern="\d*" inputMode="numeric" min={0}/>
+{errors.qty3 && <span className="text-red-500">{errors.qty3.message}</span>}
 
 <label className='pl-2' htmlFor="qty4">Long Sleeve:</label>
-<input {...register('qty4', { valueAsNumber: true, onChange: calcShirts })} id="qty4" placeholder="Quantity" className="border text-center border-gray-300 rounded-md p-2"/>
+<input {...register('qty4', { valueAsNumber: true, onChange: calcShirts, validate: validateNumber })} id="qty4" placeholder="Quantity" className={`border text-center border-gray-300 rounded-md p-2 ${errors.qty4 && 'border-red-500'}`} type="number" pattern="\d*" inputMode="numeric" min={0}/>
+{errors.qty4 && <span className="text-red-500">{errors.qty4.message}</span>}
         <button type="submit" className="bg-blue-500 text-white ml-3 px-4 py-2 rounded-md">Calculate Quote</button>
       </form>
       <table className="table-auto w-full mt-8">
