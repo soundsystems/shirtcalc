@@ -37,7 +37,6 @@ const MSAShirtCalculator: React.FC = () => {
   const [output, setOutput] = useState<CalculatedItem[]>([]);
   const [lightShirtSelected, setLightShirtSelected] = useState<boolean>(true);
   const [screenFeeSubtotal, setScreenFeeSubtotal] = useState<number>(0);
-  let screenFee = 10;
 
 
   const calcShirts: SubmitHandler<FormInputs> = (data) => {
@@ -65,9 +64,8 @@ const MSAShirtCalculator: React.FC = () => {
       return { ...rest, qty: quantities[index], total, unitPrice: shirtPrice, darkUnitPrice };
     }).filter(item => item.qty > 0);
   
-    const totalDesignElements = data.designElements || 1;
-    setScreenFeeSubtotal(totalDesignElements * screenFee);
-  
+
+    setScreenFeeSubtotal(screenFee);
     setOutput(calculatedOutput);
   };
 
@@ -142,7 +140,7 @@ const MSAShirtCalculator: React.FC = () => {
   }
     <tr className="total-row">
     <td className="border px-4 py-2 font-bold" colSpan={3}>Subtotal:</td>
-  <td className="border px-4 py-2 font-bold">${output.reduce((acc, item) => acc + item.total, 0) + screenFeeSubtotal.toFixed(2)}</td>
+<td className="border px-4 py-2 font-bold">${(output.reduce((acc, item) => acc + item.total, 0) + screenFeeSubtotal).toFixed(2)}</td>
     </tr>
   </tfoot>
       </table>
