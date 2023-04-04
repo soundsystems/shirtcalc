@@ -84,14 +84,14 @@ const MSAShirtCalculator: React.FC = () => {
     <Image src="/logo.png" alt="MSA Logo" width={200} height={200} />
     </div>
     <main className='py-5'>
-      <h1 className="flex justify-center text-2xl font-bold mb-4 pt-3"> Screen-Print Pricing Calculator </h1>
-      <h3 className="text-lg font-semibold mb-2">Garment Color:</h3>
-  <div className="flex space-x-4 items-center">
-    <input type="radio" id="light" name="shirtColor" value="light" checked={lightShirtSelected} onChange={() => handleShirtSelection(true)} />
-    <label htmlFor="light">Light</label>
-    <input type="radio" id="dark" name="shirtColor" value="dark" checked={!lightShirtSelected} onChange={() => handleShirtSelection(false)} />
-    <label htmlFor="dark">Dark <span className='italic'> [Requires a White-Ink Underbase] </span> </label>
-  </div>
+      <h1 className="flex justify-center text-2xl font-bold mb-4 pt-3"> Screen-Print Estimator </h1>
+      <h3 className="text-lg text-center font-semibold mb-2">Garment Color:</h3>
+<div className="flex space-x-4 items-center justify-center">
+  <input type="radio" id="light" name="shirtColor" value="light" checked={lightShirtSelected} onChange={() => handleShirtSelection(true)} />
+  <label htmlFor="light">Light</label>
+  <input type="radio" id="dark" name="shirtColor" value="dark" checked={!lightShirtSelected} onChange={() => handleShirtSelection(false)} />
+  <label htmlFor="dark">Dark <span className='italic'> [Requires a White-Ink Underbase] </span> </label>
+</div>
       <hr className="mb-4" />
       <form onSubmit={handleSubmit(calcShirts)} className="space-y-4 flex flex-col items-center">
 <label htmlFor="designElements">Number of Design Elements:</label>
