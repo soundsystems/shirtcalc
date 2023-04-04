@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Image from 'next/image';
 
@@ -33,13 +33,14 @@ interface FormInputs {
 }
 
 const MSAShirtCalculator: React.FC = () => {
-  const { register, handleSubmit } = useForm<FormInputs>();
+  const { register, handleSubmit, getValues } = useForm<FormInputs>();
   const [output, setOutput] = useState<CalculatedItem[]>([]);
   const [lightShirtSelected, setLightShirtSelected] = useState<boolean>(true);
   const [screenFeeSubtotal, setScreenFeeSubtotal] = useState<number>(0);
 
 
-  const calcShirts: SubmitHandler<FormInputs> = (data) => {
+  const calcShirts: SubmitHandler<FormInputs> = () => {
+    const data = getValues();
     const items: Item[] = [
       { name: 'T-Shirt', unitPrice: 16, darkUnitPrice: 18, designElements: 1 },
       { name: 'Crewneck', unitPrice: 12, darkUnitPrice: 14, designElements: 1 },
@@ -54,8 +55,7 @@ const MSAShirtCalculator: React.FC = () => {
       data.qty4 || 0,
     ];
   
-    const screenFee = data.screenFee || 10;
-
+    const screenFee = data.designElements ? data.designElements * 10 : 10;
   
     const calculatedOutput: CalculatedItem[] = items.map((item, index) => {
       const { unitPrice, darkUnitPrice, ...rest } = item;
@@ -93,18 +93,18 @@ const MSAShirtCalculator: React.FC = () => {
       <hr className="mb-4" />
       <form onSubmit={handleSubmit(calcShirts)} className="space-y-4 flex flex-col items-center">
 <label htmlFor="designElements">Number of Design Elements:</label>
-<input {...register('designElements', { valueAsNumber: true })} id="screenFee" placeholder="Amount" defaultValue="1" className="border text-center border-gray-300 rounded-md p-2" />
+<input {...register('designElements', { valueAsNumber: true, onChange:calcShirts })} id="screenFee" placeholder="Amount" defaultValue="1" className="border text-center border-gray-300 rounded-md p-2" />
 <label htmlFor="qty1">T-Shirt:</label>
-<input {...register('qty1', { valueAsNumber: true })} id="qty1" placeholder="Quantity" className="border text-center border-gray-300 rounded-md p-2"/>
+<input {...register('qty1', { valueAsNumber: true, onChange: calcShirts })} id="qty1" placeholder="Quantity" className="border text-center border-gray-300 rounded-md p-2"/>
 
 <label className='pl-2' htmlFor="qty2">Crewneck:</label>
-<input {...register('qty2', { valueAsNumber: true })} id="qty2" placeholder="Quantity" className="border text-center border-gray-300 rounded-md p-2"/>
+<input {...register('qty2', { valueAsNumber: true, onChange: calcShirts })} id="qty2" placeholder="Quantity" className="border text-center border-gray-300 rounded-md p-2"/>
 
 <label className='pl-2' htmlFor="qty3">Hoodie:</label>
-<input {...register('qty3', { valueAsNumber: true })} id="qty3" placeholder="Quantity" className="border text-center border-gray-300 rounded-md p-2"/>
+<input {...register('qty3', { valueAsNumber: true, onChange: calcShirts })} id="qty3" placeholder="Quantity" className="border text-center border-gray-300 rounded-md p-2"/>
 
 <label className='pl-2' htmlFor="qty4">Long Sleeve:</label>
-<input {...register('qty4', { valueAsNumber: true })} id="qty4" placeholder="Quantity" className="border text-center border-gray-300 rounded-md p-2"/>
+<input {...register('qty4', { valueAsNumber: true, onChange: calcShirts })} id="qty4" placeholder="Quantity" className="border text-center border-gray-300 rounded-md p-2"/>
         <button type="submit" className="bg-blue-500 text-white ml-3 px-4 py-2 rounded-md">Calculate Quote</button>
       </form>
       <table className="table-auto w-full mt-8">
