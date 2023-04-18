@@ -131,7 +131,7 @@ const MSAShirtCalculator: React.FC = () => {
             <th className="px-4 py-2">Total SKU Price</th>
           </tr>
         </thead>
-        <tbody className='p-4'>
+    <tbody className='p-4'>
         {output.map(({ unitPrice, ...rest }, index) => (
     <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
       <td className="border text-center px-4 py-2">{rest.qty}</td>
