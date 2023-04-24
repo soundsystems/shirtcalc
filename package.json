@@ -1,6 +1,6 @@
 {
   "name": "shirtcalc",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "preinstall": "npx only-allow pnpm",
@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.22",
+    "postcss": "^8.4.23",
     "tailwindcss": "^3.3.1"
   }
 }
