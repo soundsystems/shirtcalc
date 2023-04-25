@@ -98,12 +98,12 @@ const MSAShirtCalculator: React.FC = () => {
       <h3 className="text-lg text-center font-semibold mb-2 dark:text-white">Garment Color:</h3>
 {/* Select Light Colored Garment */}
       <div className="flex space-x-4 items-center justify-center">
-  <input className="text-purple-500 focus:ring-0" type="radio" id="light" name="shirtColor" value="light" checked={lightShirtSelected} onChange={() => handleShirtSelection(true)} />
-  <label className='dark:text-white' htmlFor="light">Light</label>
+  <input className="text-purple-500 w-6 h-6 focus:ring-0" type="radio" id="light" name="shirtColor" value="light" checked={lightShirtSelected} onChange={() => handleShirtSelection(true)} />
+  <label className='dark:text-white font-medium' htmlFor="light">Light</label>
 {/* Select Dark Colored Garment */}
   <div onMouseOver={() => setTooltipOneVisible(true)} onMouseOut={() => setTooltipOneVisible(false)} onTouchStart={() => setTooltipOneVisible(!tooltipOneVisible)}>
-  <input className="text-purple-500 focus:ring-0" type="radio" id="dark" name="shirtColor" value="dark" checked={!lightShirtSelected} onChange={() => handleShirtSelection(false)} />
-  <label htmlFor="dark" className="relative p-2 dark:text-white">Dark<span className= "p-1">&#8505;</span>
+  <input className="text-purple-500 w-6 h-6 focus:ring-0" type="radio" id="dark" name="shirtColor" value="dark" checked={!lightShirtSelected} onChange={() => handleShirtSelection(false)} />
+  <label htmlFor="dark" className="relative pl-4 font-medium dark:text-white">Dark<span className= "p-1">&#8505;</span>
   </label>
   <span
     className={`italic absolute z-10 px-2 py-1 text-xs bg-gray-700 text-white rounded-md mt-1 ${tooltipOneVisible ? '' : 'hidden'}`}
@@ -113,10 +113,12 @@ const MSAShirtCalculator: React.FC = () => {
   </div>
 </div>
 
-      <hr className="mb-4" />
+      <hr className="my-4" />
 <form onSubmit={handleSubmit(calcShirts)} className="space-y-4 flex flex-col items-center lg:items-end lg:flex-row lg:justify-center">
   <div className="flex flex-col items-center" onMouseOver={() => setTooltipTwoVisible(true)} onMouseOut={() => setTooltipTwoVisible(false)} onTouchStart={() => setTooltipTwoVisible(!tooltipTwoVisible)}>
-    <label htmlFor="designElements" className="lg:pr-4 dark:text-white"><span className= "p-1">&#8505;</span>Number of Design Elements:</label>
+    <label htmlFor="designElements" className="font-semibold lg:pr-4 dark:text-white"><span className= "p-1">&#8505;</span>Design Elements:</label>
+    <input {...register('designElements', { valueAsNumber: true, validate: validateDesignElements })} onFocus={()=> setTooltipTwoVisible(false)} id="screenFee" placeholder="Amount" defaultValue="1" className={`focus:border-purple-500 border-2 text-center border-purple-200 rounded-md p-2 dark:bg-slate-600 dark:text-white ${errors.designElements && "border-red-500"} w-3/4`} type="number" pattern="\d*" inputMode="numeric" min={1}/>
+    {errors.designElements && <span className="text-red-500">{errors.designElements.message}</span>}
     <span
     className={`italic absolute z-10 px-2 py-1 text-xs bg-gray-700 text-white rounded-md mt-1 ${tooltipTwoVisible ? '' : 'hidden'}`}
   >
@@ -124,50 +126,48 @@ const MSAShirtCalculator: React.FC = () => {
     Note: If the same graphic is used twice, then it is only counted as one element <br/>
     (ie. First graphic on Front Left Chest + Second Graphic on Full Back = 2 design elements)
   </span>
-    <input {...register('designElements', { valueAsNumber: true, validate: validateDesignElements })} id="screenFee" placeholder="Amount" defaultValue="1" className={`focus:border-purple-500 border-2 text-center border-purple-200 rounded-md p-2 dark:bg-slate-600 dark:text-white ${errors.designElements && "border-red-500"} w-1/2`} type="number" pattern="\d*" inputMode="numeric" min={1}/>
-    {errors.designElements && <span className="text-red-500">{errors.designElements.message}</span>}
   </div>
 
   <div className="flex flex-col items-center">
-    <label className='dark:text-white' htmlFor="gmt1">T-Shirt:</label>
-    <input {...register('gmt1', { valueAsNumber: true, validate: validateNumber })} id="gmt1" placeholder="Quantity" className={`focus:border-purple-500 border-2 text-center border-purple-200 rounded-md p-2 dark:bg-slate-600 dark:text-white ${errors.gmt1 && "border-red-500"} w-1/2`} type="number" pattern="\d*" inputMode="numeric" min={0}/>
+    <label className='font-semibold dark:text-white' htmlFor="gmt1">T-Shirt:</label>
+    <input {...register('gmt1', { valueAsNumber: true, validate: validateNumber })} id="gmt1" placeholder="Quantity" className={`focus:border-purple-500 border-2 text-center border-purple-200 rounded-md p-2 dark:bg-slate-600 dark:text-white ${errors.gmt1 && "border-red-500"} w-3/4`} type="number" pattern="\d*" inputMode="numeric" min={0}/>
     {errors.gmt1 && <span className="text-red-500">{errors.gmt1.message}</span>}
   </div>
 
   <div className="flex flex-col items-center">
-    <label className='pl-2 dark:text-white'htmlFor="gmt2">Crewneck:</label>
-    <input {...register('gmt2', { valueAsNumber: true, validate: validateNumber })} id="gmt2" placeholder="Quantity" className={`focus:border-purple-500 border-2 text-center border-purple-200 rounded-md p-2 dark:bg-slate-600 dark:text-white ${errors.gmt2 && "border-red-500"} w-1/2`} type="number" pattern="\d*" inputMode="numeric" min={0}/>
+    <label className='pl-2 font-semibold dark:text-white'htmlFor="gmt2">Crewneck:</label>
+    <input {...register('gmt2', { valueAsNumber: true, validate: validateNumber })} id="gmt2" placeholder="Quantity" className={`focus:border-purple-500 border-2 text-center border-purple-200 rounded-md p-2 dark:bg-slate-600 dark:text-white ${errors.gmt2 && "border-red-500"} w-3/4`} type="number" pattern="\d*" inputMode="numeric" min={0}/>
     {errors.gmt2 && <span className="text-red-500">{errors.gmt2.message}</span>}
   </div>
 
   <div className="flex flex-col items-center">
-    <label className='pl-2 dark:text-white' htmlFor="gmt3">Hoodie:</label>
-    <input {...register('gmt3', { valueAsNumber: true, validate: validateNumber })} id="gmt3" placeholder="Quantity" className={`focus:border-purple-500 border-2 text-center border-purple-200 rounded-md p-2 dark:bg-slate-600 dark:text-white ${errors.gmt3 && "border-red-500"} w-1/2`} type="number" pattern="\d*" inputMode="numeric" min={0}/>
+    <label className='pl-2 font-semibold dark:text-white' htmlFor="gmt3">Hoodie:</label>
+    <input {...register('gmt3', { valueAsNumber: true, validate: validateNumber })} id="gmt3" placeholder="Quantity" className={`focus:border-purple-500 border-2 text-center border-purple-200 rounded-md p-2 dark:bg-slate-600 dark:text-white ${errors.gmt3 && "border-red-500"} w-3/4`} type="number" pattern="\d*" inputMode="numeric" min={0}/>
     {errors.gmt3 && <span className="text-red-500">{errors.gmt3.message}</span>}
   </div>
 
   <div className="flex flex-col items-center">
-    <label className='pl-2 dark:text-white' htmlFor="gmt4">Long Sleeve:</label>
-    <input {...register('gmt4', { valueAsNumber: true, validate: validateNumber })} id="gmt4" placeholder="Quantity" className={`focus:border-purple-500 border-2 text-center border-purple-200 rounded-md p-2 dark:bg-slate-600 dark:text-white ${errors.gmt4 && "border-red-500"} w-1/2`} type="number" pattern="\d*" inputMode="numeric" min={0}/> 
+    <label className='pl-2 font-semibold dark:text-white' htmlFor="gmt4">Long Sleeve:</label>
+    <input {...register('gmt4', { valueAsNumber: true, validate: validateNumber })} id="gmt4" placeholder="Quantity" className={`focus:border-purple-500 border-2 text-center border-purple-200 rounded-md p-2 dark:bg-slate-600 dark:text-white ${errors.gmt4 && "border-red-500"} w-3/4`} type="number" pattern="\d*" inputMode="numeric" min={0}/> 
     {errors.gmt4 && <span className="text-red-500">{errors.gmt4.message}</span>}
 </div>
 
-  <button type="submit" className="bg-purple-500 text-white ml-3 px-4 py-2 rounded-lg">Calculate Quote</button>
+  <button type="submit" className="bg-purple-500 text-white font-bold px-4 py-2 rounded-lg">Calculate Quote</button>
 </form>
 
       <table className="table-auto w-full mt-8">
         <thead>
           <tr className="bg-gray-200 dark:bg-slate-700">
-            <th className="px-4 py-2 dark:text-white">Quantity</th>
-            <th className="px-4 py-2 dark:text-white">SKU</th>
-            <th className="px-4 py-2 dark:text-white">Unit Price</th>
-            <th className="px-4 py-2 dark:text-white">Total SKU</th>
+            <th className="px-4 py-2 font-bold dark:text-white">Quantity</th>
+            <th className="px-4 py-2 font-bold dark:text-white">SKU</th>
+            <th className="px-4 py-2 font-bold dark:text-white">Unit Price</th>
+            <th className="px-4 py-2 font-bold dark:text-white">Total SKU</th>
           </tr>
         </thead>
     <tbody className='p-4 dark:text-white'>
         {output.map(({ unitPrice, ...rest }, index) => (
     <tr key={index} className={index % 2 === 0 ? 'bg-gray-100 dark:bg-slate-600' : ''}>
-      <td className="border text-center px-4 py-2">{rest.gmt}</td>
+      <td className="border font-semibold text-center px-4 py-2">{rest.gmt}</td>
       <td className="border text-left px-4 py-2">{rest.name}</td>
       <td className="border text-center px-4 py-2">${unitPrice.toFixed(2)}</td>
       <td className="border text-center px-4 py-2">${rest.total.toFixed(2)}</td>
@@ -182,14 +182,14 @@ const MSAShirtCalculator: React.FC = () => {
   </span>
   {output.length > 0 &&
     <tr className="total-row">
-      <td className="border px-4 py-2 font-bold text-right dark:text-white" colSpan={3}><span className= "p-1">&#8505;</span>Screen Fee:
+      <td className="border px-4 py-2 font-bold text-right dark:text-white dark:bg-slate-500" colSpan={3}><span className= "p-1">&#8505;</span>Screen Fee:
   </td>
-      <td className="border px-4 py-2 font-bold dark:text-white" onMouseOver={() => setTooltipThreeVisible(true)} onMouseOut={() => setTooltipThreeVisible(false)} onTouchStart={() => setTooltipThreeVisible(!tooltipThreeVisible)}>${screenFeeSubtotal}</td>
+      <td className="border px-4 py-2 font-bold dark:text-white dark:bg-slate-500" onMouseOver={() => setTooltipThreeVisible(true)} onMouseOut={() => setTooltipThreeVisible(false)} onTouchStart={() => setTooltipThreeVisible(!tooltipThreeVisible)}>${screenFeeSubtotal}</td>
     </tr>
   }
     <tr className="total-row">
-    <td className="border px-4 py-2 font-bold text-right dark:text-white" colSpan={3}>Subtotal:</td>
-<td className="border px-4 py-2 font-bold dark:text-white">${(output.reduce((acc, item) => acc + item.total, 0) + screenFeeSubtotal).toFixed(2)}</td>
+    <td className="border px-4 py-2 font-bold text-right dark:text-white dark:bg-slate-500" colSpan={3}>Subtotal:</td>
+<td className="border px-4 py-2 font-bold dark:text-white dark:bg-slate-500">${(output.reduce((acc, item) => acc + item.total, 0) + screenFeeSubtotal).toFixed(2)}</td>
     </tr>
   </tfoot>
       </table>
