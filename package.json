@@ -1,6 +1,6 @@
 {
   "name": "shirtcalc",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "private": true,
   "scripts": {
     "preinstall": "npx only-allow pnpm",
@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@types/node": "18.16.0",
-    "@types/react": "18.0.38",
-    "@types/react-dom": "18.0.11",
+    "@types/react": "18.2.0",
+    "@types/react-dom": "18.2.1",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.1",
     "next": "13.3.1",

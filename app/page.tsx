@@ -122,9 +122,8 @@ const MSAShirtCalculator: React.FC = () => {
     <span
     className={`italic absolute z-10 px-2 py-1 text-xs bg-gray-700 text-white rounded-md mt-1 ${tooltipTwoVisible ? '' : 'hidden'}`}
   >
-    The number of unique graphics on the garment <br/>
-    Note: If the same graphic is used twice, then it is only counted as one element <br/>
-    (ie. First graphic on Front Left Chest + Second Graphic on Full Back = 2 design elements)
+    The number of unique graphics to be printed <br/>
+    Note: If the same graphic is used twice, then it is only counted as one element
   </span>
   </div>
 
