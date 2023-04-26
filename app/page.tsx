@@ -9,8 +9,8 @@ interface Item {
   unitPrice: number;
   darkUnitPrice: number;
   designElements: number;
+  
 }
-
 
 interface CalculatedItem extends Item {
   gmt: number;
@@ -35,9 +35,12 @@ interface FormInputs {
 const MSAShirtCalculator: React.FC = () => {
   const { register, handleSubmit, getValues, formState: { errors } } = useForm<FormInputs>();
   const [output, setOutput] = useState<CalculatedItem[]>([]);
+
   const [lightShirtSelected, setLightShirtSelected] = useState<boolean>(true);
+  
   const [screenFeeSubtotal, setScreenFeeSubtotal] = useState<number>(0);
-  const [tooltipOneVisible, setTooltipOneVisible] = useState(false); // NEW: State for tooltip visibility
+
+  const [tooltipOneVisible, setTooltipOneVisible] = useState(false); // State for tooltip visibility
   const [tooltipTwoVisible, setTooltipTwoVisible] = useState(false);
   const [tooltipThreeVisible, setTooltipThreeVisible] = useState(false);
 
@@ -51,7 +54,7 @@ const MSAShirtCalculator: React.FC = () => {
   };
   
 
-  const calcShirts: SubmitHandler<FormInputs> = () => {
+  const calcPrint: SubmitHandler<FormInputs> = () => {
     const data = getValues();
     const items: Item[] = [
       { name: 'T-Shirt', unitPrice: 5, darkUnitPrice: 6, designElements: 1 },
@@ -114,7 +117,7 @@ const MSAShirtCalculator: React.FC = () => {
 </div>
 
       <hr className="my-4" />
-<form onSubmit={handleSubmit(calcShirts)} className="space-y-4 flex flex-col items-center lg:items-end lg:flex-row lg:justify-center">
+<form onSubmit={handleSubmit(calcPrint)} className="space-y-4 flex flex-col items-center lg:items-end lg:flex-row lg:justify-center">
   <div className="flex flex-col items-center" onMouseOver={() => setTooltipTwoVisible(true)} onMouseOut={() => setTooltipTwoVisible(false)} onTouchStart={() => setTooltipTwoVisible(!tooltipTwoVisible)}>
     <label htmlFor="designElements" className="font-semibold lg:pr-4 dark:text-white"><span className= "p-1">&#8505;</span>Design Elements:</label>
     <input {...register('designElements', { valueAsNumber: true, validate: validateDesignElements })} onFocus={()=> setTooltipTwoVisible(false)} id="screenFee" placeholder="Amount" defaultValue="1" className={`focus:border-purple-500 border-2 text-center border-purple-200 rounded-md p-2 dark:bg-slate-600 dark:text-white ${errors.designElements && "border-red-500"} w-3/4`} type="number" pattern="\d*" inputMode="numeric" min={1}/>
