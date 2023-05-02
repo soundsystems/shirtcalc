@@ -1,15 +1,17 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Image from 'next/image';
+import BrandSelect from '../components/BrandSelect';
 
 interface Item {
-  name: string;
+  sku: string;
+  garmentType: string;
+  brand: string;
   unitPrice: number;
   darkUnitPrice: number;
   designElements: number;
-  
 }
 
 interface CalculatedItem extends Item {
@@ -32,11 +34,14 @@ interface FormInputs {
   screenFee: number;
 }
 
-const MSAShirtCalculator: React.FC = () => {
+const MSAPrintCalculator: React.FC = () => {
   const { register, handleSubmit, getValues, formState: { errors } } = useForm<FormInputs>();
   const [output, setOutput] = useState<CalculatedItem[]>([]);
 
   const [lightShirtSelected, setLightShirtSelected] = useState<boolean>(true);
+  const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
+  const [selectedSku, setSelectedSku] = useState<string | null>(null); // State for sku selector
+
   
   const [screenFeeSubtotal, setScreenFeeSubtotal] = useState<number>(0);
 
@@ -53,15 +58,20 @@ const MSAShirtCalculator: React.FC = () => {
     return value > 0;
   };
   
+  const handleBrandSelection = (brand: string | null) => {
+    setSelectedBrand(brand);
+  };
+  
 
   const calcPrint: SubmitHandler<FormInputs> = () => {
     const data = getValues();
     const items: Item[] = [
-      { name: 'T-Shirt', unitPrice: 5, darkUnitPrice: 6, designElements: 1 },
-      { name: 'Crewneck', unitPrice: 11, darkUnitPrice: 13, designElements: 1 },
-      { name: 'Hoodie', unitPrice: 18, darkUnitPrice: 20, designElements: 1 },
-      { name: 'Long Sleeve', unitPrice: 9, darkUnitPrice: 11, designElements: 1 },
+      { sku: 'TS001', garmentType: 'T-Shirt', brand: 'BrandA', unitPrice: 5, darkUnitPrice: 6, designElements: 1 },
+      { sku: 'CN001', garmentType: 'Crewneck', brand: 'BrandA', unitPrice: 11, darkUnitPrice: 13, designElements: 1 },
+      { sku: 'HD001', garmentType: 'Hoodie', brand: 'BrandB', unitPrice: 18, darkUnitPrice: 20, designElements: 1 },
+      { sku: 'LS001', garmentType: 'Long Sleeve', brand: 'BrandB', unitPrice: 9, darkUnitPrice: 11, designElements: 1 },
     ];
+    
   
     const garments = [
       data.gmt1 || 0,
@@ -92,7 +102,7 @@ const MSAShirtCalculator: React.FC = () => {
   }
 
   return (
-    <body className='p-4 dark:bg-slate-900'>
+    <body className='p-4 dark:bg-slate-950'>
     <div className="flex flex-col items-center pt-8">
     <Image src="/logo.png" alt="MSA Logo" width={200} height={200} />
     </div>
@@ -101,11 +111,11 @@ const MSAShirtCalculator: React.FC = () => {
       <h3 className="text-lg text-center font-semibold mb-2 dark:text-white">Garment Color:</h3>
 {/* Select Light Colored Garment */}
       <div className="flex space-x-4 items-center justify-center">
-  <input className="text-purple-500 w-6 h-6 focus:ring-0" type="radio" id="light" name="shirtColor" value="light" checked={lightShirtSelected} onChange={() => handleShirtSelection(true)} />
+  <input className="text-purple-500 w-6 h-6 focus:ring-0" type="radio" id="light" name="garmentColor" value="light" checked={lightShirtSelected} onChange={() => handleShirtSelection(true)} />
   <label className='dark:text-white font-medium' htmlFor="light">Light</label>
 {/* Select Dark Colored Garment */}
   <div onMouseOver={() => setTooltipOneVisible(true)} onMouseOut={() => setTooltipOneVisible(false)} onTouchStart={() => setTooltipOneVisible(!tooltipOneVisible)}>
-  <input className="text-purple-500 w-6 h-6 focus:ring-0" type="radio" id="dark" name="shirtColor" value="dark" checked={!lightShirtSelected} onChange={() => handleShirtSelection(false)} />
+  <input className="text-purple-500 w-6 h-6 focus:ring-0" type="radio" id="dark" name="garmentColor" value="dark" checked={!lightShirtSelected} onChange={() => handleShirtSelection(false)} />
   <label htmlFor="dark" className="relative pl-4 font-medium dark:text-white">Dark<span className= "p-1">&#8505;</span>
   </label>
   <span
@@ -130,10 +140,12 @@ const MSAShirtCalculator: React.FC = () => {
   </span>
   </div>
 
+{/* Garment Quantity Inputs */}
   <div className="flex flex-col items-center">
     <label className='font-semibold dark:text-white' htmlFor="gmt1">T-Shirt:</label>
     <input {...register('gmt1', { valueAsNumber: true, validate: validateNumber })} id="gmt1" placeholder="Quantity" className={`focus:border-purple-500 border-2 text-center border-purple-200 rounded-md p-2 dark:bg-slate-600 dark:text-white ${errors.gmt1 && "border-red-500"} w-3/4`} type="number" pattern="\d*" inputMode="numeric" min={0}/>
     {errors.gmt1 && <span className="text-red-500">{errors.gmt1.message}</span>}
+    <BrandSelect />
   </div>
 
   <div className="flex flex-col items-center">
@@ -159,7 +171,7 @@ const MSAShirtCalculator: React.FC = () => {
 
       <table className="table-auto w-full mt-8">
         <thead>
-          <tr className="bg-gray-200 dark:bg-slate-700">
+          <tr className="bg-gray-200 dark:bg-slate-900">
             <th className="px-4 py-2 font-bold dark:text-white">Quantity</th>
             <th className="px-4 py-2 font-bold dark:text-white">SKU</th>
             <th className="px-4 py-2 font-bold dark:text-white">Unit Price</th>
@@ -170,7 +182,7 @@ const MSAShirtCalculator: React.FC = () => {
         {output.map(({ unitPrice, ...rest }, index) => (
     <tr key={index} className={index % 2 === 0 ? 'bg-gray-100 dark:bg-slate-600' : ''}>
       <td className="border font-semibold text-center px-4 py-2">{rest.gmt}</td>
-      <td className="border text-left px-4 py-2">{rest.name}</td>
+      <td className="border text-left px-4 py-2">{rest.garmentType}</td>
       <td className="border text-center px-4 py-2">${unitPrice.toFixed(2)}</td>
       <td className="border text-center px-4 py-2">${rest.total.toFixed(2)}</td>
     </tr>
@@ -200,4 +212,4 @@ const MSAShirtCalculator: React.FC = () => {
   );
 };
 
-export default MSAShirtCalculator;
+export default MSAPrintCalculator;
